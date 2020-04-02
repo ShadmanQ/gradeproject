@@ -7,15 +7,19 @@ from commands import allCommands
 
 class State():
 
-    def callback(data):
-        rospy.loginfo((data.result))
+    def __init__(self):
+        rospy.loginfo("listener has started")
+        self.commands_module = allCommands()
+
+    def callback(self, data):
+      #  rospy.loginfo((data.result))
         self.parse(data.result)
 
-    def parse(command):
+    def parse(self, command):
         if "move" in command:
-            allCommands.command_move()
+            self.commands_module.command_move(command)
 
-    def listener():
+    def listener(self):
 
         # In ROS, nodes are uniquely named. If two nodes with the same
         # name are launched, the previous one is kicked off. The
@@ -31,4 +35,5 @@ class State():
 
 
 if __name__ == '__main__':
-    State.listener()
+    state = State()
+    state.listener()
